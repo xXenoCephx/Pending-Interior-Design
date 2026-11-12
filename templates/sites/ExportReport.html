@@ -3,20 +3,51 @@
 {% block title %}Export Report{% endblock %}
 
 {% block content %}
+<script src="{{ url_for('static', filename='js/export_report.js') }}"></script>
 <section class="PlatformManagers Dashboard">
     <section class="hero">
         <h1>Export Report</h1>
+        <a class="button" href="{{ url_for('platform_managers') }}">Back to Dashboard</a>
     </section>  
     
     <section class="section">
-        <h2>Export Reports</h2>
+        <h2>Export as PDF</h2>
         <p class="intro">Export Reports here</p>
-        <form class="form">
-            <dropdown>
+        <form class="form export-form" action="{{ url_for('export_report_pdf') }}" method="POST">
+            <fieldset>
                 <label>Select Report:</label>
-            </dropdown>
-            <submit class="button" type="submit">Export Report</submit>
+                <dropdown>
+                    <select id="report_index" name="report_index" required>
+                        {% for report in reports %}
+                        <option value="{{ loop.index0 }}">
+                            {{ report.report_date }} - {{ report.report_type }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </dropdown><br>
+                <button class="button" type="submit">Export Report</button>
+            </fieldset>
         </form>
     </section>  
+
+    <section class="section">
+        <h2>Export as Excel</h2>
+        <p class="intro">Export reports as an Excel spreadsheet with a chart</p>
+        <form class="form export-form" action="{{ url_for('export_report_excel') }}" method="POST">
+            <fieldset>
+                <label >Select Report:</label>
+                <dropdown>
+                    <select id="excel_report_index" name="report_index" required>
+                        {% for report in reports %}
+                        <option value="{{ loop.index0 }}">
+                            {{ report.report_date }} - {{ report.report_type }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </dropdown><br>
+                <button class="button" type="submit">Export as Excel</button>
+            </fieldset>
+        </form>
+    </section>
 </section>
 {% endblock %}
